@@ -1,3 +1,4 @@
+# ReactJS
 # Logs
 logs
 *.log
@@ -23,7 +24,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# ignoring backend
 # Virtual Environment
 venv/
 env/
@@ -31,6 +31,8 @@ envs/
 *.conda
 Pipfile.lock
 .venv/
+
+# ignoring backend
 
 # Django
 *.pyc
