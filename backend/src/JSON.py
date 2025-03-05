@@ -1,9 +1,9 @@
+import os
 import json
-import psycopg2
-
 
 def readJSON_File():
     try:
+        os.chdir(os.path.dirname(os.path.abspath(__file__)))
         with open("../stock_market_data.json", "r") as file:
             data = json.load(file)
             return data
@@ -11,3 +11,4 @@ def readJSON_File():
         print(f"An error occured during json file: {Exception}")
         return None
 
+readJSON_File()

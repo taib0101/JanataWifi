@@ -22,7 +22,7 @@ def createConnection():
         print(f"An error occured during database configuration: {Exception}")
         return None
 
-# Create your models here.
+
 def Create_Operation(connection):
     if connection is None:
         return "Connection Didn't extablished"
@@ -40,26 +40,29 @@ def Create_Operation(connection):
     existsTable = cursor.fetchone()[0]
     print(f"Janata exists ? {existsTable}")
     
-    if existsTable is False:
+    if existsTable is True:
         data = JSON.readJSON_File()
-        
-        cursor.execute("""
-            CREATE TABLE Janata (
-                objectID VARCHAR(150) PRIMARY KEY NOT NULL,
-                date VARCHAR(12) NOT NULL,
-                trade_code VARCHAR(50) NOT NULL,
-                high VARCHAR(7) NOT NULL,
-                low VARCHAR(7) NOT NULL,
-                open VARCHAR(7) NOT NULL,
-                close VARCHAR(7) NOT NULL,
-                volume VARCHAR(30) NOT NULL
-            )
-        """)
+        # cursor.execute("""
+        #     CREATE TABLE Janata (
+        #         objectID VARCHAR(150) PRIMARY KEY NOT NULL,
+        #         date VARCHAR(12) NOT NULL,
+        #         trade_code VARCHAR(50) NOT NULL,
+        #         high VARCHAR(7) NOT NULL,
+        #         low VARCHAR(7) NOT NULL,
+        #         open VARCHAR(7) NOT NULL,
+        #         close VARCHAR(7) NOT NULL,
+        #         volume VARCHAR(30) NOT NULL
+        #     )
+        # """)
 
-        cursor.execute("""
-            CREATE INDEX index_objectID ON Janata(objectID)
-        """)
+        for value in data:
+            print(value)
+
+        # cursor.execute("""
+        #     CREATE INDEX index_objectID ON Janata(objectID)
+        # """)
     else:
+        # print("sucking data:", data)
         print("already exists")
 
     connection.commit()
