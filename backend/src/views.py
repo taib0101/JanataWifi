@@ -3,13 +3,7 @@ import manage
 from .CRUD import createData, readData, updateData, deleteData
 import json
 
-
 connection = manage.connection
-
-def custom404(request, exception):
-    return JsonResponse({
-        "message": "404 Not Found",
-    }, status = 404)
 
 def createData_Views(request):
     if request.method == 'POST':
