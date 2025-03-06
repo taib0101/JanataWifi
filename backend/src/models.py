@@ -3,7 +3,6 @@ import psycopg2
 import uuid
 from src import JSON
 
-
 def createConnection():
     # it prevent twice calling from manage.py during run the server
     if os.environ.get('RUN_MAIN') == 'true':
@@ -28,7 +27,7 @@ def createConnection():
 def Create_New_Table(cursor):
     data = JSON.readJSON_File()
 
-    try: 
+    try:
         cursor.execute("""
             CREATE TABLE janata (
                 objectID VARCHAR(100) PRIMARY KEY NOT NULL,
@@ -55,7 +54,7 @@ def Create_New_Table(cursor):
     except Exception:
         print(f"An error occured during creating database table: {Exception}")
 
-def Create_Operation(connection):
+def Create_Operation(connection, requestValues):
     if connection is None:
         return "Connection Didn't extablished"
 
@@ -68,12 +67,17 @@ def Create_Operation(connection):
             WHERE tablename=%s
         )
     """, ("janata",))
-
     existsTable = cursor.fetchone()[0]
-    # print(f"Janata exists ? {existsTable}")
 
     if existsTable is True:
-        print("already exists")
+        uniqueId = uuid.uuid1()
+
+        # to read last 10 data
+        # select * from janata offset (select count(*) from janata) - 10 limit 10;
+        cursor.execute("""
+            INSERT INTO janata(objectID, date, trade_code, high, low, open, close, volume)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        """, (str(uniqueId), requestValues["date"], requestValues["trade_code"], requestValues["high"], requestValues["low"], requestValues["open"], requestValues["close"], requestValues["volume"],))
     else:
         Create_New_Table(cursor)
 
