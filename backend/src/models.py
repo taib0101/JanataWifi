@@ -1,16 +1,19 @@
 import psycopg2
 import uuid
 from . import JSON
+from backend import settings
 
 def createConnection():
     try:
-        connection = psycopg2.connect(
-            host="localhost",
-            database="taibDatabase",
-            user="taib",
-            password="1234",
-            port="5432"
-        )
+        # connection = psycopg2.connect(
+        #     host="localhost",
+        #     database="taibDatabase",
+        #     user="taib",
+        #     password="1234",
+        #     port="5432"
+        # )
+
+        connection = psycopg2.connect(settings.DATABASES_URL)
 
         print("Connection established successfully!")
         return connection
