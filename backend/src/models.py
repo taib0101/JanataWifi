@@ -50,21 +50,23 @@ def Create_New_Table(cursor):
     except Exception:
         print(f"An error occured during creating database table: {Exception}")
 
-def Create_Operation(connection, requestValues):
-    if connection is None:
-        return "Connection Didn't extablished"
-
-    cursor = connection.cursor()
-
+def existsTable(cursor):
     cursor.execute("""
         SELECT EXISTS (
             SELECT FROM pg_tables
             WHERE tablename=%s
         )
     """, ("janata",))
-    existsTable = cursor.fetchone()[0]
+    exists = cursor.fetchone()[0]
 
-    if existsTable is True:
+    return exists 
+
+def Create_Operation(connection, requestBody):
+    if connection is None:
+        return "Connection Didn't extablished"
+
+    cursor = connection.cursor()
+    if existsTable(cursor) is True:
         uniqueId = uuid.uuid1()
 
         # to read last 10 data
@@ -72,7 +74,7 @@ def Create_Operation(connection, requestValues):
         cursor.execute("""
             INSERT INTO janata(objectID, date, trade_code, high, low, open, close, volume)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """, (str(uniqueId), requestValues["date"], requestValues["trade_code"], requestValues["high"], requestValues["low"], requestValues["open"], requestValues["close"], requestValues["volume"],))
+        """, (str(uniqueId), requestBody["date"], requestBody["trade_code"], requestBody["high"], requestBody["low"], requestBody["open"], requestBody["close"], requestBody["volume"],))
     else:
         Create_New_Table(cursor)
 
@@ -80,3 +82,20 @@ def Create_Operation(connection, requestValues):
     cursor.close()
 
     return
+
+def Read_Operation(connection):
+    if connection is None:
+        return "Connection Didn't extablished"
+    
+    cursor = connection.cursor()
+    if existsTable(cursor) is False:
+        return []
+    
+    cursor.execute("""
+        SELECT * FROM janata
+    """)
+    data = cursor.fetchall()
+
+    cursor.close()
+    return data
+        
