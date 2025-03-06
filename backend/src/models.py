@@ -1,8 +1,6 @@
-import os
 import psycopg2
 import uuid
 from . import JSON
-
 
 def createConnection():
     try:
@@ -21,7 +19,7 @@ def createConnection():
         return None
 
 
-def Create_New_Table(cursor):
+def Create_New_Table(connection, cursor):
     data = JSON.readJSON_File()
 
     try:
@@ -47,7 +45,10 @@ def Create_New_Table(cursor):
             cursor.execute("""
                 INSERT INTO janata(objectID, date, trade_code, high, low, open, close, volume)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-            """, (str(uniqueId), value['date'], value['trade_code'], value['high'], value['low'], value['open'], value['close'], value['volume'],))
+            """, (str(uniqueId), value['date'], value['trade_code'], 
+            value['high'], value['low'], value['open'], value['close'], value['volume'],))
+        connection.commit()
+
     except Exception:
         print(f"An error occured during creating database table: {Exception}")
 
@@ -62,77 +63,3 @@ def existsTable(cursor):
     exists = cursor.fetchone()[0]
 
     return exists
-
-
-def Create_Operation(connection, requestBody):
-    if connection is None:
-        return "Connection Didn't extablished"
-
-    cursor = connection.cursor()
-    if existsTable(cursor) is True:
-        uniqueId = uuid.uuid1()
-
-        # to read last 10 data
-        # select * from janata offset (select count(*) from janata) - 10 limit 10;
-        cursor.execute("""
-            INSERT INTO janata(objectID, date, trade_code, high, low, open, close, volume)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        """, (str(uniqueId), requestBody["date"], requestBody["trade_code"], requestBody["high"], requestBody["low"], requestBody["open"], requestBody["close"], requestBody["volume"],))
-    else:
-        Create_New_Table(cursor)
-
-    connection.commit()
-    cursor.close()
-
-    return
-
-
-def Read_Operation(connection):
-    if connection is None:
-        return "Connection Didn't extablished"
-
-    cursor = connection.cursor()
-    if existsTable(cursor) is False:
-        return []
-
-    cursor.execute("""
-        SELECT * FROM janata
-    """)
-    data = cursor.fetchall()
-
-    cursor.close()
-    return data
-
-
-def Update_Operation(connection, objectID, requestBody):
-    if connection is None:
-        return "Connection Didn't extablished"
-
-    cursor = connection.cursor()
-    if existsTable(cursor) is False:
-        return
-
-    cursor.execute("""
-        UPDATE janata SET date = %s, trade_code = %s, high = %s, low = %s,
-        open = %s, close = %s, volume = %s WHERE objectId = %s
-    """, (requestBody["date"], requestBody["trade_code"], requestBody["high"], requestBody["low"], requestBody["open"], requestBody["close"], requestBody["volume"], objectID, ))
-
-    connection.commit()
-    cursor.close()
-    return
-
-def Delete_Operation(connection, objectID):
-    if connection is None:
-        return "Connection Didn't extablished"
-
-    cursor = connection.cursor()
-    if existsTable(cursor) is False:
-        return
-    
-    cursor.execute("""
-        DELETE FROM janata WHERE objectID = %s
-    """, (objectID, ))
-
-    connection.commit()
-    cursor.close()
-    return

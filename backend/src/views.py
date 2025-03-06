@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 import manage
-from . import models
+from .CRUD import createData, readData, updateData, deleteData
 import json
 
 
@@ -14,10 +14,16 @@ def custom404(request, exception):
 def createData_Views(request):
     if request.method == 'POST':
         requestBody = json.loads(request.body)
-        models.Create_Operation(connection, requestBody)
+        databaseResponse = createData.Create_Operation(connection, requestBody)
+
+        if isinstance(databaseResponse, str):
+            return JsonResponse({
+                "message": databaseResponse
+            }, status = 500)
+
         return JsonResponse({
             "message": "Inserted Data Successfully"
-        })
+        }, status = 200)
 
     return JsonResponse({
         "message": "404 Not Found",
@@ -25,11 +31,17 @@ def createData_Views(request):
 
 def readData_Views(request):
     if request.method == 'GET':
-        responseData = models.Read_Operation(connection)
+        databaseResponse = readData.Read_Operation(connection)
+
+        if isinstance(databaseResponse, str):
+            return JsonResponse({
+                "message": databaseResponse
+            }, status = 500)
+        
         return JsonResponse({
             "message": "Readed Data Successfully",
-            "data": responseData
-        })
+            "data": databaseResponse
+        }, status = 200)
     
     return JsonResponse({
         "message": "404 Not Found",
@@ -39,8 +51,14 @@ def updateData_Views(request):
     if request.method == 'PUT':
         objectID = request.META.get('HTTP_OBJECTID')
         requestBody = json.loads(request.body)
-        print("update view : ", objectID, requestBody)
-        models.Update_Operation(connection, objectID, requestBody)
+        # print("update view : ", objectID, requestBody)
+
+        databaseResponse = updateData.Update_Operation(connection, objectID, requestBody)
+        if isinstance(databaseResponse, str):
+            return JsonResponse({
+                "message": databaseResponse
+            }, status = 500)
+        
         return JsonResponse({
             "message": "Updated Data Successfully",
         })
@@ -52,7 +70,13 @@ def updateData_Views(request):
 def deleteData_Views(request):
     if request.method == 'DELETE':
         objectID = request.META.get('HTTP_OBJECTID')
-        models.Delete_Operation(connection, objectID)
+
+        databaseResponse = deleteData.Delete_Operation(connection, objectID)
+        if isinstance(databaseResponse, str):
+            return JsonResponse({
+                "message": databaseResponse
+            }, status = 500)
+        
         return JsonResponse({
             "message": "Deleted Data Successfully",
         })
