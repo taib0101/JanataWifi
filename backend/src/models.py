@@ -4,10 +4,6 @@ import uuid
 from src import JSON
 
 def createConnection():
-    # it prevent twice calling from manage.py during run the server
-    if os.environ.get('RUN_MAIN') == 'true':
-        return
-
     try:
         connection = psycopg2.connect(
             host="localhost",
@@ -59,7 +55,6 @@ def Create_Operation(connection, requestValues):
         return "Connection Didn't extablished"
 
     cursor = connection.cursor()
-    # print("Connection Cursor Shit :", cursor)
 
     cursor.execute("""
         SELECT EXISTS (
@@ -83,3 +78,5 @@ def Create_Operation(connection, requestValues):
 
     connection.commit()
     cursor.close()
+
+    return
