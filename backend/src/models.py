@@ -1,7 +1,8 @@
 import os
 import psycopg2
 import uuid
-from src import JSON
+from . import JSON
+
 
 def createConnection():
     try:
@@ -50,6 +51,7 @@ def Create_New_Table(cursor):
     except Exception:
         print(f"An error occured during creating database table: {Exception}")
 
+
 def existsTable(cursor):
     cursor.execute("""
         SELECT EXISTS (
@@ -59,7 +61,8 @@ def existsTable(cursor):
     """, ("janata",))
     exists = cursor.fetchone()[0]
 
-    return exists 
+    return exists
+
 
 def Create_Operation(connection, requestBody):
     if connection is None:
@@ -83,14 +86,15 @@ def Create_Operation(connection, requestBody):
 
     return
 
+
 def Read_Operation(connection):
     if connection is None:
         return "Connection Didn't extablished"
-    
+
     cursor = connection.cursor()
     if existsTable(cursor) is False:
         return []
-    
+
     cursor.execute("""
         SELECT * FROM janata
     """)
@@ -98,4 +102,37 @@ def Read_Operation(connection):
 
     cursor.close()
     return data
-        
+
+
+def Update_Operation(connection, objectID, requestBody):
+    if connection is None:
+        return "Connection Didn't extablished"
+
+    cursor = connection.cursor()
+    if existsTable(cursor) is False:
+        return
+
+    cursor.execute("""
+        UPDATE janata SET date = %s, trade_code = %s, high = %s, low = %s,
+        open = %s, close = %s, volume = %s WHERE objectId = %s
+    """, (requestBody["date"], requestBody["trade_code"], requestBody["high"], requestBody["low"], requestBody["open"], requestBody["close"], requestBody["volume"], objectID, ))
+
+    connection.commit()
+    cursor.close()
+    return
+
+def Delete_Operation(connection, objectID):
+    if connection is None:
+        return "Connection Didn't extablished"
+
+    cursor = connection.cursor()
+    if existsTable(cursor) is False:
+        return
+    
+    cursor.execute("""
+        DELETE FROM janata WHERE objectID = %s
+    """, (objectID, ))
+
+    connection.commit()
+    cursor.close()
+    return
