@@ -1,0 +1,55 @@
+# Step 01:
+1. create an account to `Python AnyWhere`. link: https://www.pythonanywhere.com/registration/register/beginner/
+2. login to that. link: https://www.pythonanywhere.com/login/
+
+# Step 02:
+1. Goto Navber `Files`
+2. upload backend.zip file
+
+# Step 03:
+1. goto Navber `Consoles` -> start new console `Bash`
+2. 
+    $ mkvirtualenv --python=/usr/bin/python3.10 venv
+    $ pip list
+    $ pip install Django mysql-connector-python
+    python-dotenv
+    $ unzip backend.zip
+    $ source ~/.virtualenvs/venv/bin/activate
+    $ deactivate
+    $ exit
+
+# Step 05:
+    $ cd backend
+    $ nano /home/user/backend/backend/settings.py
+    /*
+        ALLOWED_HOSTS = ['user.pythonanywhere.com'] # this change where you got from Web, and see Step 05
+    */
+
+# Step 05:
+1. Goto Navber `Web` -> click `Add a new web app` -> click `Select Python Configuration = Manual Configuration`
+
+2. click `python version = Python 3.10` -> click `Next` ..
+3. goto navber `Web` -> `Code: Source Code = '/home/user/backend'`
+4. -> click ` WSGI configuration file: /var/www/user_pythonanywhere_com_wsgi.py`
+    # Configure that file below code and save
+    /*
+        import os
+        import sys
+        
+        path = '/home/taib0110/backend' # ********* this change
+        if path not in sys.path:
+            sys.path.append(path)
+        #
+        os.environ['DJANGO_SETTINGS_MODULE'] = 'backend.settings' # ********* this change
+        #
+        ## then:
+        from django.core.wsgi import get_wsgi_application
+        application = get_wsgi_application()
+    */
+
+5. -> `Virtualenv = '/home/user/.virtualenvs/venv'`
+
+# Step 06:
+1. Goto Navber `Web` -> click `Reload = 'user.pythonanywhere.com'` 
+
+####  NOTE: For Free Python Any Where onlu support Mysql DataBase
