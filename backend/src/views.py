@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, StreamingHttpResponse
 import manage
 from .CRUD import createData, readData, updateData, deleteData
 import json
@@ -23,6 +23,18 @@ def createData_Views(request):
         "message": "404 Not Found",
     }, status = 404)
 
+def getData(data):
+    yield '{"message": "Readed Data Successfully", "data": ['
+    first = True
+    for item in data:
+        if not first:
+            yield ','
+        else:
+            first = False
+
+        yield json.dumps(item)
+    yield ']}'
+
 def readData_Views(request):
     if request.method == 'GET':
         databaseResponse = readData.Read_Operation(connection)
@@ -32,10 +44,7 @@ def readData_Views(request):
                 "message": databaseResponse
             }, status = 500)
         
-        return JsonResponse({
-            "message": "Readed Data Successfully",
-            "data": databaseResponse
-        }, status = 200)
+        return StreamingHttpResponse(getData(databaseResponse), content_type='application/json')
     
     return JsonResponse({
         "message": "404 Not Found",

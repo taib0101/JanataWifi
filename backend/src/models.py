@@ -13,12 +13,13 @@ def createConnection():
         #     port="5432"
         # )
 
+        # avine database Url
         connection = psycopg2.connect(settings.DATABASES_URL)
 
         print("Connection established successfully!")
         return connection
-    except Exception:
-        print(f"An error occured during database configuration: {Exception}")
+    except psycopg2.Error as exce:
+        print(f"An error occured during database configuration: {exce}")
         return None
 
 
@@ -52,17 +53,20 @@ def Create_New_Table(connection, cursor):
             value['high'], value['low'], value['open'], value['close'], value['volume'],))
         connection.commit()
 
-    except Exception:
-        print(f"An error occured during creating database table: {Exception}")
+    except psycopg2.Error as exce:
+        print(f"An error occured during creating database table: {exce}")
 
 
 def existsTable(cursor):
-    cursor.execute("""
-        SELECT EXISTS (
-            SELECT FROM pg_tables
-            WHERE tablename=%s
-        )
-    """, ("janata",))
-    exists = cursor.fetchone()[0]
+    try:
+        cursor.execute("""
+            SELECT EXISTS (
+                SELECT FROM pg_tables
+                WHERE tablename=%s
+            )
+        """, ("janata",))
+        exists = cursor.fetchone()[0]
 
-    return exists
+        return exists
+    except psycopg2.Error as exce:
+        print(f"An error occured during check table exists : {exce}")
