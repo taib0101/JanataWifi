@@ -40,6 +40,7 @@ __pycache__/
 db.sqlite3
 *.sqlite3
 media/
+.env
 
 # Python
 *.py[cod]
@@ -52,3 +53,6 @@ media/
 *.egg-info/
 dist/
 build/
+
+# others
+backend.zip
