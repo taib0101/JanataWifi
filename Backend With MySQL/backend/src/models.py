@@ -16,14 +16,6 @@ def createConnection():
         # mysql> SHOW GRANTS;
         # mysql> CREATE DATABASE taibDatabase;
         # mysql> USE taibDatabase;
-        
-        # python anywhere
-        # connection = mysql.connector.connect(
-        #     host="taib0110.mysql.pythonanywhere-services.com",
-        #     database="taib0110$taibDatabase",
-        #     user="taib0110",
-        #     password="#include<mysql.h>",
-        # )
 
         # localhost
         connection = mysql.connector.connect(
