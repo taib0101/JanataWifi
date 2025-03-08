@@ -1,9 +1,5 @@
 import os
 import sys
-from src import models
-
-# giving connection to data base
-connection = models.createConnection()
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
@@ -17,11 +13,8 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     
-    try:
-        execute_from_command_line(sys.argv)
-    finally:
-        connection.close()
-        print("Database Connection closed")
+    execute_from_command_line(sys.argv)
 
 if __name__ == '__main__':
     main()
+

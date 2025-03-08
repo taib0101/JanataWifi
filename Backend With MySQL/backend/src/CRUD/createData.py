@@ -2,8 +2,9 @@ import uuid
 from mysql.connector import Error, OperationalError
 from .. import models
 
-def Create_Operation(connection, requestBody):
+def Create_Operation(requestBody):
     try:
+        connection = models.createConnection()
         cursor = connection.cursor()
         uniqueId = uuid.uuid1()
 
@@ -15,9 +16,11 @@ def Create_Operation(connection, requestBody):
 
         connection.commit()
         cursor.close()
+        connection.close()
 
         return
     except Error as exce:
         if isinstance(exce, OperationalError):
-            Create_Operation(models.createConnection(), requestBody)
+            Create_Operation(requestBody)
         return str(exce)
+

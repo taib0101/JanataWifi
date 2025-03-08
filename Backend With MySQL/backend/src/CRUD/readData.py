@@ -1,8 +1,9 @@
 from .. import models
 from mysql.connector import Error, OperationalError
 
-def Read_Operation(connection):
+def Read_Operation():
     try:
+        connection = models.createConnection()
         cursor = connection.cursor()
         existsTableResponse = models.existsTable(cursor)
 
@@ -22,6 +23,7 @@ def Read_Operation(connection):
         
         columns = [columnDescription[0] for columnDescription in cursor.description]
         cursor.close()
+        connection.close()
 
         for row in data:
             result.append(dict(zip(columns, row)))
@@ -29,6 +31,6 @@ def Read_Operation(connection):
         return result
     except (Error, Exception) as exce:
         if isinstance(exce, OperationalError):
-            Read_Operation(models.createConnection())
+            Read_Operation()
         return exce
         

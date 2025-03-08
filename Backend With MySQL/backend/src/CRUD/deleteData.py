@@ -1,8 +1,9 @@
 from mysql.connector import Error, OperationalError
 from .. import models
 
-def Delete_Operation(connection, objectID):
+def Delete_Operation(objectID):
     try:
+        connection = models.createConnection()
         cursor = connection.cursor()
         
         cursor.execute("""
@@ -11,9 +12,11 @@ def Delete_Operation(connection, objectID):
 
         connection.commit()
         cursor.close()
+        connection.close()
     
         return
     except Error as exce:
         if isinstance(exce, OperationalError):
-            Delete_Operation(models.createConnection(), objectID)
+            Delete_Operation(objectID)
         return str(exce)
+

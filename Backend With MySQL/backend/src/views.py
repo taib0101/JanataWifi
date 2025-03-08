@@ -1,15 +1,12 @@
 from django.http import JsonResponse, StreamingHttpResponse
-import manage
 from .CRUD import createData, readData, updateData, deleteData
 import json
 from mysql.connector import OperationalError
 
-connection = manage.connection
-
 def createData_Views(request):
     if request.method == 'POST':
         requestBody = json.loads(request.body)
-        databaseResponse = createData.Create_Operation(connection, requestBody)
+        databaseResponse = createData.Create_Operation(requestBody)
 
         if isinstance(databaseResponse, str):
             return JsonResponse({
@@ -48,7 +45,7 @@ def getData(data):
 
 def readData_Views(request):
     if request.method == 'GET':
-        databaseResponse = readData.Read_Operation(connection)
+        databaseResponse = readData.Read_Operation()
 
         if isinstance(databaseResponse, OperationalError):
             return JsonResponse({
@@ -67,7 +64,7 @@ def updateData_Views(request):
         requestBody = json.loads(request.body)
         # print("update view : ", objectID, requestBody)
 
-        databaseResponse = updateData.Update_Operation(connection, objectID, requestBody)
+        databaseResponse = updateData.Update_Operation(objectID, requestBody)
         if isinstance(databaseResponse, str):
             return JsonResponse({
                 "message": databaseResponse
@@ -85,7 +82,7 @@ def deleteData_Views(request):
     if request.method == 'DELETE':
         objectID = request.META.get('HTTP_OBJECTID')
 
-        databaseResponse = deleteData.Delete_Operation(connection, objectID)
+        databaseResponse = deleteData.Delete_Operation(objectID)
         if isinstance(databaseResponse, str):
             return JsonResponse({
                 "message": databaseResponse
