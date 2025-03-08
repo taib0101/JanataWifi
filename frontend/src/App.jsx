@@ -1,13 +1,11 @@
-import { useState } from 'react'
+import { SubApp } from "./SubApp.jsx"
 
-function App() {
-  const [count, setCount] = useState(0)
+export const App = () => {
 
   return (
     <>
-      <p className={`text-3xl font-bold underline text-blue-800`}>Bro</p>
+      <SubApp />
     </>
   )
 }
 
-export default App
