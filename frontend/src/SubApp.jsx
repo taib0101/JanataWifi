@@ -36,8 +36,9 @@ export const SubApp = () => {
       const response = await axios.get("https://taib0110.pythonanywhere.com/");
       console.log("Brooo : ", response.data.data);
 
-      // setData(response.data.data);
-      setData(Bro);
+      setData(response.data.data);
+
+      // setData(Bro);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data : ", error.message);
