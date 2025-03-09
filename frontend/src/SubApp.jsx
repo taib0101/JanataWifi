@@ -9,7 +9,7 @@ export const SubApp = () => {
   const [loading, setLoading] = useState(true);
   // const [selectedTradeCode, setSelectedTradeCode] = useState("A");
 
-  const Bro = [
+  const test = [
     {
       objectID: "23d91834-fbec-11ef-ac2a-0affd551b62d",
       date: "2020-08-10",
@@ -34,11 +34,11 @@ export const SubApp = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get("https://taib0110.pythonanywhere.com/");
-      console.log("Brooo : ", response.data.data);
+      // console.log("Brooo : ", response.data.data);
 
       setData(response.data.data);
 
-      // setData(Bro);
+      // setData(test);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data : ", error.message);

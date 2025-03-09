@@ -1,6 +1,7 @@
+import { memo } from "react"
 import { SubApp } from "./SubApp.jsx"
 
-export const App = () => {
+const App = () => {
 
   return (
     <>
@@ -8,4 +9,6 @@ export const App = () => {
     </>
   )
 }
+
+export default memo(App);
 
