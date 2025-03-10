@@ -101,7 +101,7 @@ export const LargeTableBody = () => {
   };
 
   return (
-    <div className="w-full h-[79dvh] lg:h-[73dvh]">
+    <div className="w-full h-[86dvh] lg:h-[80dvh]">
       <AutoSizer>
         {({ height, width }) => (
           <List

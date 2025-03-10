@@ -52,10 +52,7 @@ export const SubApp = () => {
         ) : (
           <>
             <div className="flex justify-center">
-              <h2 className="text-3xl font-semibold">Mustain Murtaza Taib</h2>
-            </div>
-            <div className="flex justify-center">
-              <h2 className="text-3xl font-semibold">
+              <h2 className="lg:text-2xl text-gray-700 font-semibold">
                 JanataWiFi Data Visualization
               </h2>
             </div>
