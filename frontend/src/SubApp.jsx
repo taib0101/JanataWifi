@@ -9,43 +9,17 @@ export const SubApp = () => {
   const [loading, setLoading] = useState(true);
   // const [selectedTradeCode, setSelectedTradeCode] = useState("A");
 
-  const test = [
-    {
-      objectID: "23d91834-fbec-11ef-ac2a-0affd551b62d",
-      date: "2020-08-10",
-      trade_code: "1JANATAMF",
-      high: "4.3",
-      low: "4.1",
-      open: "4.2",
-      close: "4.1",
-      volume: "2,285,416",
-    },
-    {
-      objectID: "23d91834-fbec-11ef-ac2a-0affd551b62d",
-      date: "2020-08-10",
-      trade_code: "1JANATAMF",
-      high: "4.3",
-      low: "4.1",
-      open: "4.2",
-      close: "4.1",
-      volume: "2,285,416",
-    },
-  ];
   const fetchData = async () => {
     try {
       const response = await axios.get("https://taib0110.pythonanywhere.com/");
-      // console.log("Brooo : ", response.data.data);
-
-      setData(response.data.data);
-
-      // setData(test);
+      const sortedDatesDescending = response.data.data.slice().sort((a, b) => b.date.localeCompare(a.date));
+      setData(sortedDatesDescending);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data : ", error.message);
     }
   };
 
-  // Fetch data from API
   useEffect(() => {
     fetchData();
   }, []);
@@ -55,6 +29,8 @@ export const SubApp = () => {
       data,
       setData,
     },
+    readData: fetchData,
+    setLoading
   };
   return (
     <SubAppContext.Provider value={SubAppContextObject}>

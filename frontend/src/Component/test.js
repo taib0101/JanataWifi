@@ -1,44 +1,18 @@
-import React from 'react';
-import { List, AutoSizer } from 'react-virtualized';
-import 'react-virtualized/styles.css';
+const dates = [
+  "2020-08-10",
+  "2020-08-09",
+  "2020-08-06",
+  "2020-08-05",
+  "2020-08-04",
+  "2020-08-03",
+  "2020-07-30",
+  "2020-07-29",
+  "2020-07-28",
+  "2020-07-27"
+];
 
-const VirtualizedListExample = ({ items }) => {
-  const rowRenderer = ({ index, key, style }) => {
-    const item = items[index];
-    return (
-      <div key={key} style={style} className="row">
-        {item}
-      </div>
-    );
-  };
-
-  return (
-    <div style={{ height: '400px', width: '300px' }}>
-      <AutoSizer>
-        {({ height, width }) => (
-          <List
-            width={width}
-            height={height}
-            rowCount={items.length}
-            rowHeight={30}
-            rowRenderer={rowRenderer}
-          />
-        )}
-      </AutoSizer>
-      <style jsx>{`
-        .row {
-          border-bottom: 1px solid #eee;
-          padding: 8px;
-        }
-      `}</style>
-    </div>
-  );
-};
-
-const ExampleComponent = () => {
-  const items = Array.from({ length: 1000 }, (_, index) => `Item ${index}`);
-
-  return <VirtualizedListExample items={items} />;
-};
-
-export default ExampleComponent;
+// Sort in ascending order (earliest to latest)
+const sortedDatesAscending = dates.slice().sort(); // Use slice() to create a copy
+for(let value of sortedDatesAscending) {
+  console.log(value);
+}
