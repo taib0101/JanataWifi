@@ -1,3 +1,7 @@
+/*
+    Author: Mustain Murtaza Taib
+*/
+
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 

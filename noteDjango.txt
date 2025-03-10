@@ -1,0 +1,21 @@
+# install
+sudo apt update
+sudo apt install python3
+sudo apt install python3-pip
+pip install django
+pip install django-cors-headers
+pip install python-dotenv
+pip install mysql-connector-python
+sudo apt install python3-django
+django-admin startproject backend # to create and start a project 
+cd backend/
+python3 manage.py migrate
+python3 manage.py startapp src
+
+# dot env
+2. cd backend/
+3. nano .env
+
+# run server 
+1. python3 manage.py runserver
+2. python3 manage.py runserver --noreload # to prevent twice reloading

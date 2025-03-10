@@ -11,7 +11,7 @@
 2. 
     $ mkvirtualenv --python=/usr/bin/python3.10 venv
     $ pip list
-    $ pip install Django mysql-connector-python
+    $ pip install Django mysql-connector-python django-cors-headers
     python-dotenv
     $ unzip backend.zip
     $ source ~/.virtualenvs/venv/bin/activate
