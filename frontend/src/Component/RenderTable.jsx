@@ -5,7 +5,6 @@ import { TableHead } from "./TableHead.jsx";
 
 export const RenderTableContext = createContext();
 
-// Render the table
 export const RenderTable = () => {
   const [showForm, setShowForm] = useState({
     check: false,
@@ -35,7 +34,7 @@ export const RenderTable = () => {
               onClick={() =>
                 setShowForm({ ...showForm, check: true, type: "create" })
               }
-              className="w-full p-2 bg-blue-500 text-white hover:bg-blue-600"
+              className="cursor-pointer w-full p-2 bg-blue-500 text-white hover:bg-blue-600"
             >
               Create
             </button>

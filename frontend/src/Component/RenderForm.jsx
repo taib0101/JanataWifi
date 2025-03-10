@@ -3,11 +3,11 @@ import axios from "axios";
 import { RenderTableContext } from "./RenderTable.jsx";
 import { SubAppContext } from "../SubApp.jsx";
 
-// Render the form
 export const RenderForm = () => {
   const RenderTableContextValue = useContext(RenderTableContext);
   const { showForm, setShowForm } = RenderTableContextValue.formInformation;
   const SubAppContextValue = useContext(SubAppContext);
+  const { createUrl, updateUrl } = SubAppContextValue.Method;
 
   const { trade_code, high, low, open, close, volume } =
     showForm.initialFormData;
@@ -21,9 +21,6 @@ export const RenderForm = () => {
     close: close || "",
     volume: volume || "",
   });
-
-  // console.log("showForm : ", formData);
-  // console.log("RenderTableContextValue : ", RenderTableContextValue);
 
   const createDate = () => {
     let Datee = new Date(Date.now()).toLocaleDateString().split("/");
@@ -41,10 +38,6 @@ export const RenderForm = () => {
       setShowForm({ ...showForm, check: false, initialFormData: {} });
 
       let Datee = await createDate();
-      console.log(Datee);
-
-      const createUrl = "https://taib0110.pythonanywhere.com/create";
-      const updateUrl = "https://taib0110.pythonanywhere.com/update";
       const selectedUrl = showForm.type === "create" ? createUrl : updateUrl;
 
       const requestObject = {
@@ -62,13 +55,12 @@ export const RenderForm = () => {
       const Method = showForm.type === "create" ? "post" : "put";
 
       try {
-        const response = await axios[Method](selectedUrl, requestObject, {
+        await axios[Method](selectedUrl, requestObject, {
           headers
         });
         await SubAppContextValue.readData();
         await SubAppContextValue.setLoading(false);
 
-        console.log("response : ", response);
         console.log("Successfull");
       } catch (error) {
         window.alert(error.message + "\n" + error.response);
@@ -96,6 +88,7 @@ export const RenderForm = () => {
                 setFormData({ ...formData, ["trade_code"]: e.target.value })
               }
               className="w-full p-2 mb-2 border rounded"
+              required
             />
 
             <label>High</label>
@@ -108,6 +101,7 @@ export const RenderForm = () => {
                 setFormData({ ...formData, ["high"]: e.target.value })
               }
               className="w-full p-2 mb-2 border rounded"
+              required
             />
 
             <label>Low</label>
@@ -120,6 +114,7 @@ export const RenderForm = () => {
                 setFormData({ ...formData, ["low"]: e.target.value })
               }
               className="w-full p-2 mb-2 border rounded"
+              required
             />
 
             <label>Open</label>
@@ -132,6 +127,7 @@ export const RenderForm = () => {
                 setFormData({ ...formData, ["open"]: e.target.value })
               }
               className="w-full p-2 mb-2 border rounded"
+              required
             />
 
             <label>Close</label>
@@ -144,6 +140,7 @@ export const RenderForm = () => {
                 setFormData({ ...formData, ["close"]: e.target.value })
               }
               className="w-full p-2 mb-2 border rounded"
+              required
             />
 
             <label>Volume</label>
@@ -156,13 +153,14 @@ export const RenderForm = () => {
                 setFormData({ ...formData, ["volume"]: e.target.value })
               }
               className="w-full p-2 mb-2 border rounded"
+              required
             />
 
             <button
               type="submit"
-              className="w-full p-2 bg-blue-500 text-white hover:bg-blue-600"
+              className="cursor-pointer w-full p-2 bg-blue-500 text-white hover:bg-blue-600"
             >
-              {showForm.type === "create" ? "Add" : "Update"}
+              {showForm.type === "create" ? "Create" : "Update"}
             </button>
 
             <button
@@ -170,7 +168,7 @@ export const RenderForm = () => {
               onClick={() =>
                 setShowForm({ ...showForm, check: false, initialFormData: {} })
               }
-              className="w-full p-2 mt-2 bg-gray-500 text-white hover:bg-gray-600"
+              className="cursor-pointer w-full p-2 mt-2 bg-gray-500 text-white hover:bg-gray-600"
             >
               Cancel
             </button>

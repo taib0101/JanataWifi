@@ -7,6 +7,7 @@ import { AutoSizer, List } from "react-virtualized";
 export const LargeTableBody = () => {
   const SubAppContextValue = useContext(SubAppContext);
   const { data } = SubAppContextValue.responseData;
+  const { deleteUrl } = SubAppContextValue.Method;
   const { setLoading, readData } = SubAppContextValue;
   const RenderTableContextValue = useContext(RenderTableContext);
   const { setShowForm } = RenderTableContextValue.formInformation;
@@ -18,9 +19,8 @@ export const LargeTableBody = () => {
       const deleteData = async (objectID) => {
         setLoading(true);
 
-        console.log(objectID);
         try {
-          await axios.delete("https://taib0110.pythonanywhere.com/delete", {
+          await axios.delete(deleteUrl, {
             headers: {
               objectID: objectID,
             },
@@ -38,31 +38,31 @@ export const LargeTableBody = () => {
           style={style}
           className="flex flex-col lg:flex-row items-center justify-center lg:justify-start bg-white divide-y divide-gray-200"
         >
-          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex-1 text-center lg:text-left">
+          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex-1 text-center lg:text-left">
             <span className="font-medium lg:hidden">Date: </span>
             {`${item.date}`}
           </div>
-          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex-1 text-center lg:text-left">
+          <div className="break-words px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex-1 text-center lg:text-left">
             <span className="font-medium lg:hidden">Trade Code: </span>
             {`${item.trade_code}`}
           </div>
-          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex-1 text-center lg:text-left">
+          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex-1 text-center lg:text-left">
             <span className="font-medium lg:hidden">High: </span>
             {`${item.high}`}
           </div>
-          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex-1 text-center lg:text-left">
+          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex-1 text-center lg:text-left">
             <span className="font-medium lg:hidden">Low: </span>
             {`${item.low}`}
           </div>
-          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex-1 text-center lg:text-left">
+          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex-1 text-center lg:text-left">
             <span className="font-medium lg:hidden">Open: </span>
             {`${item.open}`}
           </div>
-          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex-1 text-center lg:text-left">
+          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex-1 text-center lg:text-left">
             <span className="font-medium lg:hidden">Close: </span>
             {`${item.close}`}
           </div>
-          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex-1 text-center lg:text-left">
+          <div className="px-3 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex-1 text-center lg:text-left">
             <span className="font-medium lg:hidden">Volume: </span>
             {`${item.volume}`}
           </div>
@@ -75,7 +75,7 @@ export const LargeTableBody = () => {
                   initialFormData: item,
                 })
               }
-              className="text-indigo-600 hover:text-indigo-900"
+              className="cursor-pointer text-indigo-600 hover:text-indigo-900"
             >
               Update
             </button>
@@ -84,7 +84,7 @@ export const LargeTableBody = () => {
                 event.preventDefault();
                 deleteData(item.objectID);
               }}
-              className="ml-2 text-red-600 hover:text-red-900"
+              className="cursor-pointer ml-2 text-red-600 hover:text-red-900"
             >
               Delete
             </button>
@@ -95,21 +95,20 @@ export const LargeTableBody = () => {
     [data, setShowForm]
   );
 
-  // Calculate row height dynamically based on screen size
   const calculateRowHeight = () => {
     const isSmallScreen = window.innerWidth < 1024;
-    return isSmallScreen ? 400 : 50; // Adjust these values as needed
+    return isSmallScreen ? 450 : 70;
   };
 
   return (
-    <div className="w-full h-[82dvh]">
+    <div className="w-full h-[79dvh] lg:h-[73dvh]">
       <AutoSizer>
         {({ height, width }) => (
           <List
             width={width}
             height={height}
             rowCount={data.length}
-            rowHeight={calculateRowHeight()} // Use dynamic row height
+            rowHeight={calculateRowHeight()}
             rowRenderer={rowRender}
           />
         )}
