@@ -12,10 +12,6 @@ cd backend/
 python3 manage.py migrate
 python3 manage.py startapp src
 
-# dot env
-2. cd backend/
-3. nano .env
-
 # run server 
 1. python3 manage.py runserver
 2. python3 manage.py runserver --noreload # to prevent twice reloading

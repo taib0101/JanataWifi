@@ -1,5 +1,10 @@
+"""
+    Author: Mustain Murtaza Taib
+"""
+
 import os
 import sys
+
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
@@ -12,9 +17,9 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    
+
     execute_from_command_line(sys.argv)
+
 
 if __name__ == '__main__':
     main()
-
